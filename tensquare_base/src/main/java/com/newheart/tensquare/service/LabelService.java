@@ -61,6 +61,7 @@ public class LabelService {
 
     private Specification<Label> searchLabel(Label label) {
         /**
+         *
          * @param root  代表查询的实体类.
          * @param query 封装的都是关键字查询，比如group by
          * @param criteriaBuilder  用来封装条件对象
