@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import utils.JwtUtil;
 //import utils.JwtUtil;
 
 import javax.annotation.Resource;
@@ -28,23 +29,23 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-//	@Resource
-//	private JwtUtil jwtUtil;
-//
-//	@PostMapping("/login")
-//	public Result login(@RequestBody Admin admin) {
-//		Admin adminLogined = adminService.login(admin);
-//		if (adminLogined == null) {
-//			return new Result(false, StatusCode.LOGINERROR.getCode(), "登录失败");
-//		}
-//		// 做一系列使得前后端可以通话的操作，采用jwt实现
-//		// 生成令牌
-//		String token = jwtUtil.createJWT(adminLogined.getId(), adminLogined.getLoginname(), "admin");
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("token", token);
-//		map.put("role", "admin");
-//		return new Result(true, StatusCode.OK.getCode(), "登录成功", map);
-//	}
+	@Resource
+	private JwtUtil jwtUtil;
+
+	@PostMapping("/login")
+	public Result login(@RequestBody Admin admin) {
+		Admin adminLogined = adminService.login(admin);
+		if (adminLogined == null) {
+			return new Result(StatusCode.LOGINERROR, false,"登录失败");
+		}
+		// 做一系列使得前后端可以通话的操作，采用jwt实现
+		// 生成令牌
+		String token = jwtUtil.createJWT(adminLogined.getId(), adminLogined.getLoginname(), "admin");
+		Map<String, Object> map = new HashMap<>();
+		map.put("token", token);
+		map.put("role", "admin");
+		return new Result( StatusCode.OK,true, "登录成功",map);
+	}
 //
 //
 //	/**
@@ -90,15 +91,15 @@ public class AdminController {
 //        return new Result(true, StatusCode.OK.getCode(), "查询成功", adminService.findSearch(searchMap));
 //    }
 //
-//	/**
-//	 * 增加
-//	 * @param admin
-//	 */
-//	@RequestMapping(method=RequestMethod.POST)
-//	public Result add(@RequestBody Admin admin){
-//		adminService.add(admin);
-//		return new Result(true, StatusCode.OK.getCode(), "增加成功");
-//	}
+	/**
+	 * 增加
+	 * @param admin
+	 */
+	@RequestMapping(method=RequestMethod.POST)
+	public Result add(@RequestBody Admin admin){
+		adminService.add(admin);
+		return new Result(StatusCode.OK, true, "增加成功");
+	}
 //
 //	/**
 //	 * 修改

@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-//import utils.JwtUtil;
+import utils.JwtUtil;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -33,8 +33,8 @@ public class UserController {
 	@Resource
 	private RedisTemplate redisTemplate;
 
-//	@Resource
-//	private JwtUtil jwtUtil;
+	@Resource
+	private JwtUtil jwtUtil;
 //
 //    /**
 //     * 更新被关注好友粉丝数跟用户自己的关注数
@@ -46,24 +46,24 @@ public class UserController {
 //        userService.updateFansAndFollower(num, userId, friendId);
 //    }
 
-//	/**
-//	 * 用户登录
-//	 * @param user
-//	 * @return
-//	 */
-//	@PostMapping("/login")
-//	public Result login(@RequestBody User user) {
-//		user = userService.login(user.getMobile(), user.getPassword());
-//		if (user == null) {
-//			return new Result(false, StatusCode.LOGINERROR.getCode(), "登录失败");
-//		}
+	/**
+	 * 用户登录
+	 * @param user
+	 * @return
+	 */
+	@PostMapping("/login")
+	public Result login(@RequestBody User user) {
+		user = userService.login(user.getMobile(), user.getPassword());
+		if (user == null) {
+			return new Result( StatusCode.LOGINERROR, false,"登录失败");
+		}
 //		// 登录成功后的操作
-//		String token = jwtUtil.createJWT(user.getId(), user.getMobile(), "user");
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("token", token);
-//		map.put("roles", "user");
-//		return new Result(true, StatusCode.OK.getCode(), "登录成功", map);
-//	}
+		String token = jwtUtil.createJWT(user.getId(), user.getMobile(), "user");
+		Map<String, Object> map = new HashMap<>();
+		map.put("token", token);
+		map.put("roles", "user");
+		return new Result(StatusCode.OK, true, "登录成功",map);
+	}
 
     /**
      * 发送验证码
@@ -79,7 +79,7 @@ public class UserController {
     @PostMapping("/register/{code}")
     public Result register(@PathVariable String code, @RequestBody User user) {
         // 得到缓存中的验证码
-        String checkCode = (String) redisTemplate.opsForValue().get("check_code_" + user.getMobile());
+        String checkCode = (String) redisTemplate.opsForValue().get("sms_"+user.getMobile());
         if (StringUtils.isEmpty(checkCode)) {
             return new Result( StatusCode.ERROR, false,"请先获取手机验证码");
         }
@@ -154,14 +154,14 @@ public class UserController {
 //		return new Result(true, StatusCode.OK.getCode(), "修改成功");
 //	}
 //
-//	/**
-//	 * 删除
-//	 * @param id
-//	 */
-//	@RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-//	public Result delete(@PathVariable String id ){
-//		userService.deleteById(id);
-//		return new Result(true, StatusCode.OK.getCode(), "删除成功");
-//	}
+	/**
+	 * 删除
+	 * @param id
+	 */
+	@RequestMapping(value="/{id}", method= RequestMethod.DELETE)
+	public Result delete(@PathVariable String id ){
+		userService.deleteById(id);
+		return new Result( StatusCode.OK,true, "删除成功");
+	}
 	
 }

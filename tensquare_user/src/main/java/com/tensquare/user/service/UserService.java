@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utils.IdWorker;
@@ -48,11 +48,11 @@ public class UserService {
     @Resource
     private RabbitTemplate rabbitTemplate;
 
-//    @Resource
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//    @Autowired
-//    private HttpServletRequest request;
+    @Autowired
+    private HttpServletRequest request;
 
 //    /**
 //     * 更新被关注好友粉丝数跟用户自己的关注数
@@ -65,19 +65,19 @@ public class UserService {
 //        userDao.updateFollowNum(num, userId);
 //    }
 //
-//    /**
-//     * 用户登录
-//     * @param mobile
-//     * @param password
-//     * @return
-//     */
-//    public User login(String mobile, String password) {
-//        User user = userDao.findByMobile(mobile);
-//        if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
-//            return user;
-//        }
-//        return null;
-//    }
+    /**
+     * 用户登录
+     * @param mobile
+     * @param password
+     * @return
+     */
+    public User login(String mobile, String password) {
+        User user = userDao.findByMobile(mobile);
+        if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
 
     /**
      * 1. 生成验证码
@@ -103,7 +103,7 @@ public class UserService {
     public void add(User user) {
         user.setId(idWorker.nextId() + "");
         // 密码加密
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setFollowcount(0); // 关注数
         user.setFanscount(0);   // 粉丝数
         user.setOnline(0L);     // 在线时长
@@ -170,18 +170,18 @@ public class UserService {
 //        userDao.save(user);
 //    }
 //
-//    /**
-//     * 删除, 必须有admin角色才能删除
-//     *
-//     * @param id
-//     */
-//    public void deleteById(String id) {
-//        String token = (String) request.getAttribute("claims_admin");
-//        if (StringUtils.isEmpty(token)) {
-//            throw new RuntimeException("权限不足！");
-//        }
-//        userDao.deleteById(id);
-//    }
+    /**
+     * 删除, 必须有admin角色才能删除
+     *
+     * @param id
+     */
+    public void deleteById(String id) {
+        String token = (String) request.getAttribute("claims_admin");
+        if (StringUtils.isEmpty(token)) {
+            throw new RuntimeException("权限不足！");
+        }
+        userDao.deleteById(id);
+    }
 //
 //    /**
 //     * 动态条件构建
