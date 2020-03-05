@@ -36,15 +36,15 @@ public class UserController {
 	@Resource
 	private JwtUtil jwtUtil;
 //
-//    /**
-//     * 更新被关注好友粉丝数跟用户自己的关注数
-//     * @param userId
-//     * @param friendId
-//     */
-//    @PutMapping("/{userId}/{friendId}/{num}")
-//    public void updateFansAndFollower(@PathVariable String userId, @PathVariable String friendId, @PathVariable int num) {
-//        userService.updateFansAndFollower(num, userId, friendId);
-//    }
+    /**
+     * 更新被关注好友粉丝数跟用户自己的关注数
+     * @param userId
+     * @param friendId
+     */
+    @PutMapping("/{userId}/{friendId}/{num}")
+    public void updateFansAndFollower(@PathVariable String userId, @PathVariable String friendId, @PathVariable int num) {
+        userService.updateFansAndFollower(num, userId, friendId);
+    }
 
 	/**
 	 * 用户登录

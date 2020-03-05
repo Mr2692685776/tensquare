@@ -1,11 +1,11 @@
 server:
-  port: 9009
+  port: 9011
 spring:
   application:
-    name: tensquare-user   # 模块名
+    name: tensquare-friend
   datasource:   # 配置数据源
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/tensquare_user?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      url: jdbc:mysql://127.0.0.1:3306/tensquare_friend?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       username: root
       password: hanjie
       driverClassName: com.mysql.cj.jdbc.Driver
@@ -20,11 +20,6 @@ spring:
   jpa:      # 配置jpa
     database: mysql
     show-sql: true
-  redis:
-    host: 106.13.191.207
-    port: 6380
-  rabbitmq:
-    host: 106.13.191.207
 eureka:
   client:
     serviceUrl:
@@ -32,7 +27,6 @@ eureka:
   instance:
     prefer-ip-address: true     # 跨域访问
 
-
-
-
-
+ribbon:
+  ConnectTimeout: 4000 #请求连接的超时时间，默认时间为1秒
+  ReadTimeout: 4000 #请求处理的超时时间

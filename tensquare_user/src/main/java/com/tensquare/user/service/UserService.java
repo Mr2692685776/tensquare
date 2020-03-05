@@ -54,17 +54,8 @@ public class UserService {
     @Autowired
     private HttpServletRequest request;
 
-//    /**
-//     * 更新被关注好友粉丝数跟用户自己的关注数
-//     * @param num
-//     * @param userId
-//     * @param friendId
-//     */
-//    public void updateFansAndFollower(int num, String userId, String friendId) {
-//        userDao.updateFansNum(num, friendId);
-//        userDao.updateFollowNum(num, userId);
-//    }
-//
+
+
     /**
      * 用户登录
      * @param mobile
@@ -181,6 +172,11 @@ public class UserService {
             throw new RuntimeException("权限不足！");
         }
         userDao.deleteById(id);
+    }
+
+    public void updateFansAndFollower(int num, String userId, String friendId) {
+        userDao.updateFan(num,friendId);
+        userDao.updateFollower(num,userId);
     }
 //
 //    /**
