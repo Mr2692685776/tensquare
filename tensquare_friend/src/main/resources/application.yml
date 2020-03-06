@@ -30,3 +30,7 @@ eureka:
 ribbon:
   ConnectTimeout: 4000 #请求连接的超时时间，默认时间为1秒
   ReadTimeout: 4000 #请求处理的超时时间
+
+feign:
+  hystrix:
+    enabled: true
