@@ -6,6 +6,8 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 //import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 //@CrossOrigin
-//@RefreshScope
+@RefreshScope
 @RequestMapping("/user")
 public class UserController {
 
@@ -35,6 +37,9 @@ public class UserController {
 
 	@Resource
 	private JwtUtil jwtUtil;
+
+	@Value("${testbus}")
+	private String testbus;
 //
     /**
      * 更新被关注好友粉丝数跟用户自己的关注数
@@ -53,6 +58,7 @@ public class UserController {
 	 */
 	@PostMapping("/login")
 	public Result login(@RequestBody User user) {
+		System.out.println(testbus);
 		user = userService.login(user.getMobile(), user.getPassword());
 		if (user == null) {
 			return new Result( StatusCode.LOGINERROR, false,"登录失败");
