@@ -1,0 +1,19 @@
+server:
+  port: 9013
+spring:
+  application:
+    name: tensquare-web   # 模块名
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:6868/eureka/
+  instance:
+    prefer-ip-address: true # 跨域访问
+zuul:
+  routes:
+    web-friend:
+      path: /friend/**
+      serviceId: tensquare-friend
+    web-user:
+      path: /user/**
+      serviceId: tensquare-user
